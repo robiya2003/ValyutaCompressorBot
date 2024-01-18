@@ -50,8 +50,9 @@ namespace SearchFileBot
             }
             else
             {
+
                
-                if (bir != null)
+                if (bir != null && ikki==null)
                 {
                     if(Int32.TryParse(message.Text, out qiymat))
                     {
@@ -64,6 +65,10 @@ namespace SearchFileBot
                            text: "Qiymatni to'g'ri kiriting  ",
                            cancellationToken: cancellationToken);
                     }
+                    else if (ikki != null)
+                    {
+                        await ButtonsControl.Buttons(botClient, update, cancellationToken, "Ayirboshlash uchun Valyutani kodini kiriting ");
+                    }
                     else
                     {
                         Message sentMessage = await botClient.SendTextMessageAsync(
@@ -72,12 +77,21 @@ namespace SearchFileBot
                            cancellationToken: cancellationToken);
                     }
                 }
-                else
+                else 
                 {
-                    await ButtonsControl.Buttons(botClient, update, cancellationToken, "Valyutani kodini kiriting ");
+                    if(bir!= null && ikki != null)
+                    {
+                        Message sentMessage = await botClient.SendTextMessageAsync(
+                           chatId: update.Message.Chat.Id,
+                           text: "Ayirboshlashni boshlash uchun tugmani bosing",
+                           cancellationToken: cancellationToken);
+                    }
+                    else
+                    {
+                        await ButtonsControl.Buttons(botClient, update, cancellationToken, "Valyutani kodini kiriting ");
+                    }
                 }
-
-
+                    
             }
         }
         public static async Task MessageOtherControll(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
